@@ -11,43 +11,7 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.uix.label import Label
 from kivy.uix.button import Button
 
-
-
-
-#Window.size = (310, 540)
-#Window.minimum_width, Window.minimum_height = Window.size
-
-# define parameters for a request
-
-token = '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'
-owner = 'adolforosas'
-repo = 'contratos'
-path = 'contratos_medicos_total_smallV2.csv'
-
-
-#path = 'contratos_medicos_total_smallV2_conproductoV7.csv'
-
-# send a request
-#r = requests.get(
-#    'https://api.github.com/repos/{owner}/{repo}/contents/{path}'.format(
-#    owner=owner, repo=repo, path=path),
-#    headers={
-#        'accept': 'application/vnd.github.v3.raw',
-#        'authorization': 'token {}'.format(token)
-#            }
-#    )
-
-## convert string to StringIO object
-#string_io_obj = StringIO(r.text)
-
-# Load data to df
-#df = pd.read_csv(string_io_obj, sep=",")
-
-#file_last ='reporte_kivy.csv'
-
-
 periodo = '2023'
-
 
 def calcula_contratos(periodo):
     top_10 = []
