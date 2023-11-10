@@ -15,8 +15,8 @@
 
     BoxLayout:
         orientation: "horizontal"
-        size_hint: 1, 0.13
-        padding: [5,10,10,10]
+        size_hint: .97, 0.13
+        padding: [5,10,30,10]
         Image:
             source: 'logo.png'  # Reemplaza con la ruta de tu logo
             #size_hint: None, None
@@ -28,13 +28,13 @@
         Label:
             id: etiqueta
             text: "Compras Públicas \n Equipo Médico"
-            font_size: 24
+            font_size: 30
             #size_hint: 0.8, 0.12
             canvas.before:
             #background_color: 25/255, 36/255, 68/255, 1  # Color de fondo (#192444)
             color: 224/255, 1, 1, 1
             text_size: self.width, None  # Establece el ancho del área de texto
-            halign: 'center'  # Centrar horizontalmente
+            halign: 'left'  # Centrar horizontalmente
             valign: 'bottom'
             padding: [0, 0, 0, 0]
             #spacing: dp(50)
@@ -45,10 +45,10 @@
             text: '2023'  # Establece el valor por defecto
             values: ['2021','2022', '2023']
             #padding: [0, 0, 0, 0]
-            pos_hint: {'center_x': 0.2, 'top': 0.8}
+            pos_hint: {'center_x': 0.2, 'top': 0.7}
             #font_size: 18
             size_hint: None, None
-            size: 120, 60  # Ajusta el tamaño como desees
+            size: 150, 80  # Ajusta el tamaño como desees
             on_text: root.actualizar_textos(self.text)
             DropDown:
                 background_normal: ''
@@ -67,9 +67,9 @@
 
         ScrollView:
             size_hint: 1, 0.4
-            bar_width: 10
+            bar_width: 20
             scroll_timeout: 150
-            scroll_type: ['bars']
+            scroll_type: ['bars','content']
 
             GridLayout:
 
