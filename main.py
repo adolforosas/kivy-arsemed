@@ -4,6 +4,7 @@ import csv
 import requests
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.screenmanager import ScreenManager
 
 #from kivy.garden.matplotlib.backend_kivyagg import FigureCanvasKivyAgg
 from garden_matplotlib.backend_kivyagg import FigureCanvasKivyAgg
@@ -38,6 +39,9 @@ instituciones_2023 = leer_csv_from_github('https://raw.githubusercontent.com/ado
 instituciones_2022 = leer_csv_from_github('https://raw.githubusercontent.com/adolforosas/kivy-arsemed/main/top_10_instituciones_2022.csv')
 instituciones_2021 = leer_csv_from_github('https://raw.githubusercontent.com/adolforosas/kivy-arsemed/main/top_10_instituciones_2021.csv')
 
+top100alfa = leer_csv_from_github('https://raw.githubusercontent.com/adolforosas/kivy-arsemed/main/top100alfabetica.csv')
+listatop100 = top100alfa[0]
+las100empresas= leer_csv_from_github('https://raw.githubusercontent.com/adolforosas/kivy-arsemed/main/las100empresas.csv')
 
 resumen = leer_csv_from_github('https://raw.githubusercontent.com/adolforosas/kivy-arsemed/main/resumenes.csv')
 
@@ -91,7 +95,7 @@ def calcula_resumen(periodo):
 #calcula_resumen(periodo='periodo')
 
 
-class Interface(BoxLayout):
+class Interface(ScreenManager):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.ids.entrada1.text = "Total Contratado \n " + resumen[0][0]
@@ -101,6 +105,22 @@ class Interface(BoxLayout):
         self.grafica_institucion()
         self.grafica_empresa()
         self.display_info(periodo)
+        self.display_screen2()
+        self.muestra_resultados(proveedor='GE SISTEMAS MEDICOS DE MEXICO SA DE CV')
+        self.ids.emp_sel.text = 'GE SISTEMAS MEDICOS DE MEXICO SA DE CV   (Montos en millones de pesos)'
+
+
+    def switching_back(self):
+        self.transition.duration = 0.5
+        self.current = "Main Screen"
+        self.transition.direction = "right"
+
+    def switching(self):
+        print(self.current_screen)
+        self.transition.duration = 0.5
+        self.transition.direction = "left"
+        self.current = "Profile"
+        print(self.current_screen)
 
     def actualizar_textos(self,periodo):
         self.resumen = calcula_resumen(periodo=periodo)
@@ -113,6 +133,109 @@ class Interface(BoxLayout):
         self.grafica_empresa()
         self.display_info(periodo)
 
+
+    def muestra_resultados(self, proveedor):
+        print(f"Botón presionado: {proveedor}")
+        self.ids.emp_sel.text = f'{proveedor}   (Montos en millones de pesos)'
+        # Lista para almacenar todas las filas que cumplen con la condición
+        filas_coincidentes = []
+
+        # Recorrer la lista y buscar por el nombre
+        for fila in las100empresas:
+            if fila and fila[0] == proveedor:
+                filas_coincidentes.append(fila)
+
+        # Imprimir todas las filas que cumplen con la condición
+        for fila in filas_coincidentes:
+            print(fila)
+
+        tabla = GridLayout(cols=6, spacing=2, size_hint_y=None)
+
+        tabla.add_widget(Label(text='Año', font_size=27, halign='center', text_size=(50, None)))
+        tabla.add_widget(Label(text='Ranking', font_size=27, halign='center', text_size=(110, None)))
+        tabla.add_widget(Label(text='Contratos', font_size=27, halign='center', text_size=(120, None)))
+        tabla.add_widget(Label(text='Servicios', font_size=27, halign='center', text_size=(160, None)))
+        tabla.add_widget(Label(text='Equipo', font_size=27, halign='center', text_size=(160, None)))
+        tabla.add_widget(Label(text='Monto Total', font_size=27, halign='center', text_size=(160, None)))
+
+        for fila in filas_coincidentes:
+            Año = fila[1]
+            Ranking = fila[2]
+            Contratos = fila[3]
+            Servicio = fila[4]
+            Equipo = fila[5]
+            Monto = fila[6]
+            button = Button(
+                text=Año,
+                background_normal='',
+                background_color=[73 / 255, 116 / 255, 165 / 255, 1],
+                font_size=27,
+                halign='center',
+                text_size=(120, None)  # Ajusta el ancho
+            )
+            tabla.add_widget(button)
+            button = Button(
+                text=Ranking,
+                background_normal='',
+                background_color=[73 / 255, 116 / 255, 165 / 255, 1],
+                font_size=27,
+                halign='center',
+                text_size=(120, None)  # Ajusta el ancho (200) y deja la altura como None
+            )
+            tabla.add_widget(button)
+
+            button = Button(
+                text=Contratos,
+                background_normal='',
+                background_color=[73 / 255, 116 / 255, 165 / 255, 1],
+                font_size=27,
+                halign='center',
+                text_size=(200, None)  # Ajusta el ancho (200) y deja la altura como None
+            )
+            tabla.add_widget(button)
+
+            importe_millones = float(Servicio) / 1000000  # Convierte a millones
+            importe_formateado = "${:,.2f} ".format(importe_millones)  # Formatea el monto
+            button = Button(
+                text=importe_formateado,
+                background_normal='',
+                background_color=[73 / 255, 116 / 255, 165 / 255, 1],
+                font_size=27,
+                halign='center',
+                text_size=(120, None)  # Ajusta el ancho (200) y deja la altura como None
+            )
+            tabla.add_widget(button)
+
+            importe_millones = float(Equipo) / 1000000  # Convierte a millones
+            importe_formateado = "${:,.2f} ".format(importe_millones)  # Formatea el monto
+            button = Button(
+                text=importe_formateado,
+                background_normal='',
+                background_color=[73 / 255, 116 / 255, 165 / 255, 1],
+                font_size=27,
+                halign='center',
+                text_size=(120, None)  # Ajusta el ancho (200) y deja la altura como None
+            )
+            tabla.add_widget(button)
+
+            importe_millones = float(Monto) / 1000000  # Convierte a millones
+            importe_formateado = "${:,.2f} ".format(importe_millones)  # Formatea el monto
+            button = Button(
+                text=importe_formateado,
+                background_normal='',
+                background_color=[73 / 255, 116 / 255, 165 / 255, 1],
+                font_size=27,
+                halign='center',
+                text_size=(120, None)  # Ajusta el ancho (200) y deja la altura como None
+            )
+            tabla.add_widget(button)
+
+        tabla.size_hint_y = None
+        tabla.height = 190  # Ajusta el valor según tus necesidades
+
+        self.ids.resultados.clear_widgets()  # Borra cualquier tabla anterior
+        self.ids.resultados.add_widget(tabla)  # Agrega la nueva tabla
+
     def display_info(self,periodo):
         contratos = calcula_contratos(periodo=periodo)
         #dfk = df[df['año'] == int(self.ids.etiqueta2.text)]
@@ -121,8 +244,8 @@ class Interface(BoxLayout):
         tabla.cols_minimum = {0: 150, 1: 400, 2: 150, 3: 180}
         tabla.add_widget(Label(text='Institución', font_size=28, text_size=(150, None)))
         tabla.add_widget(Label(text='Proveedor', font_size=28, halign='center', text_size=(400, None)))
-        tabla.add_widget(Label(text='Importe', font_size=28, text_size=(150, None)))
-        tabla.add_widget(Label(text='Producto', font_size=28, text_size=(180, None)))
+        tabla.add_widget(Label(text='Importe', font_size=28, halign='center', text_size=(150, None)))
+        tabla.add_widget(Label(text='Producto', font_size=28, halign='center', text_size=(180, None)))
 
         for fila in contratos:
             institucion = fila[0]
@@ -132,7 +255,7 @@ class Interface(BoxLayout):
             button = Button(
                 text=institucion,
                 background_normal='',
-                background_color=[73 / 255, 116 / 255, 165 / 255, 1],
+                background_color=[73/255, 116/255, 165/255, 1],
                 font_size=24,
                 halign='center',
                 text_size=(150, None)  # Ajusta el ancho
@@ -175,6 +298,26 @@ class Interface(BoxLayout):
         self.ids.tabla_contratos.clear_widgets()  # Borra cualquier tabla anterior
         self.ids.tabla_contratos.add_widget(tabla)  # Agrega la nueva tabla
 
+    def display_screen2(self):
+        tabla = GridLayout(cols=5, spacing=3, row_default_height=80, size_hint_y=None)
+        tabla.bind(minimum_height=tabla.setter('height'))
+
+        for proveedor in listatop100:
+            boton = Button(
+                text=proveedor,
+                font_size=18,
+                halign='center',
+                background_normal='',
+                background_color=[25 / 255, 36 / 255, 68 / 255, 1],
+                color=(1, 0.647, 0, 1),
+                text_size=(220, None)
+            )
+            boton.bind(on_press=lambda instance, proveedor=proveedor: self.muestra_resultados(proveedor))
+            tabla.add_widget(boton)
+
+        self.ids.empresas.clear_widgets()  # Borra cualquier tabla anterior
+        self.ids.empresas.add_widget(tabla)  # Agrega la nueva tabla
+
     def grafica_institucion(self):
         periodo = self.ids.etiqueta2.text
         top_10_instituciones2 = calcula_instituciones(periodo)
@@ -213,11 +356,11 @@ class Interface(BoxLayout):
         importes = [float(row[1].replace(',', '')) for row in data[1:]]
         empresas = [row[0] for row in data[1:]]
         fig_empresas, ax_empresas = plt.subplots(figsize=(4.5, 4,), facecolor='#192444', dpi=100)
-        ax_empresas.set_facecolor('#182243')
+        ax_empresas.set_facecolor('#192444')
 
         #inicio_barras = [18] * len(importes)  # Ajusta la posición inicial aquí
         # Crea la gráfica de barras utilizando los datos de top_10_empresas y la posición inicial ajustada
-        bars = ax_empresas.barh(empresas, importes, left=8, color='#ffa500')
+        bars = ax_empresas.barh(empresas, importes, left=8, color='#4974A5')
 
         #bars = ax_empresas.barh(empresas, importes, color='#ffa500')
         #for bar, valor in zip(bars, importes):
@@ -225,9 +368,9 @@ class Interface(BoxLayout):
         #                          va='center', color='lightcyan',fontsize=18)
 
         for bar, valor in zip(bars, importes):
-            valor_x = max(importes) * 1.4  # Alinea los valores con el mayor valor
+            valor_x = max(importes) * 1.3  # Alinea los valores con el mayor valor
             ax_empresas.text(valor_x, bar.get_y() + bar.get_height() / 2, "${:,.0f}".format(valor),
-                             va='center', ha='right', color='#ff2500', fontsize=18)
+                             va='center', ha='right', color='white', fontsize=18)
 
         #for i, bar in enumerate(reversed(bars)):
          #   ax_empresas.text(-20, bar.get_y() + bar.get_height() / 2, str(i + 1) +'', va='center', color='white')
@@ -237,8 +380,8 @@ class Interface(BoxLayout):
                                            color='lightcyan', fontsize=18)
         title.set_position([.48, .95])  # Ajusta las coordenadas [x, y]
         plt.margins(0.30, .07)
-        ax_empresas.tick_params(axis='y',labelcolor='#ff2500')  # Cambiar el color de las etiquetas del eje y a lightcyan
-        ax_empresas.tick_params(axis='x', colors='lightcyan')
+        ax_empresas.tick_params(axis='y',labelcolor='white')  # Cambiar el color de las etiquetas del eje y a lightcyan
+        ax_empresas.tick_params(axis='x', colors='white')
         plt.tick_params(labelbottom=False, bottom=False)
         plt.yticks(rotation=0, ha='left')
 
@@ -264,5 +407,4 @@ class DashboardApp(App):
 
 if __name__ == '__main__':
     DashboardApp().run()
-
 
