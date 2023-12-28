@@ -28,16 +28,22 @@ def leer_csv_from_github(file):
 contratos_2023 = leer_csv_from_github('https://raw.githubusercontent.com/adolforosas/kivy-arsemed/main/top10_2023.csv')
 contratos_2022 = leer_csv_from_github('https://raw.githubusercontent.com/adolforosas/kivy-arsemed/main/top10_2022.csv')
 contratos_2021 = leer_csv_from_github('https://raw.githubusercontent.com/adolforosas/kivy-arsemed/main/top10_2021.csv')
+contratos_30 = leer_csv_from_github('https://raw.githubusercontent.com/adolforosas/kivy-arsemed/main/top10_30.csv')
+
 
 
 empresas_2023 = leer_csv_from_github('https://raw.githubusercontent.com/adolforosas/kivy-arsemed/main/top_10_empresas_2023.csv')
 empresas_2022 = leer_csv_from_github('https://raw.githubusercontent.com/adolforosas/kivy-arsemed/main/top_10_empresas_2022.csv')
 empresas_2021 = leer_csv_from_github('https://raw.githubusercontent.com/adolforosas/kivy-arsemed/main/top_10_empresas_2021.csv')
+empresas_30 = leer_csv_from_github('https://raw.githubusercontent.com/adolforosas/kivy-arsemed/main/top_10_empresas_30.csv')
+
 
 
 instituciones_2023 = leer_csv_from_github('https://raw.githubusercontent.com/adolforosas/kivy-arsemed/main/top_10_instituciones_2023.csv')
 instituciones_2022 = leer_csv_from_github('https://raw.githubusercontent.com/adolforosas/kivy-arsemed/main/top_10_instituciones_2022.csv')
 instituciones_2021 = leer_csv_from_github('https://raw.githubusercontent.com/adolforosas/kivy-arsemed/main/top_10_instituciones_2021.csv')
+instituciones_30 = leer_csv_from_github('https://raw.githubusercontent.com/adolforosas/kivy-arsemed/main/top_10_instituciones_30.csv')
+
 
 top100alfa = leer_csv_from_github('https://raw.githubusercontent.com/adolforosas/kivy-arsemed/main/top100alfabetica.csv')
 listatop100 = top100alfa[0]
@@ -54,6 +60,8 @@ def calcula_contratos(periodo):
         contratos = contratos_2021
     elif periodo == '2022':
         contratos = contratos_2022
+    elif periodo =='30 Dias':
+        contratos = contratos_30
     else:
         contratos = contratos_2023
 
@@ -62,6 +70,8 @@ def calcula_contratos(periodo):
 def calcula_empresas(periodo):
     if periodo == '2021':
         top_10_empresas = empresas_2021
+    elif periodo =='30 Dias':
+        top_10_empresas = empresas_30
     elif periodo == '2022':
         top_10_empresas = empresas_2022
     else:
@@ -73,6 +83,8 @@ def calcula_empresas(periodo):
 def calcula_instituciones(periodo):
     if periodo == '2021':
         top_10_instituciones = instituciones_2021
+    elif periodo =='30 Dias':
+        top_10_instituciones = instituciones_30
     elif periodo == '2022':
         top_10_instituciones = instituciones_2022
     else:
@@ -86,8 +98,10 @@ def calcula_resumen(periodo):
     #resumenes = resumen
     if periodo == '2021':
         return resumen[2]
-    if periodo == '2022':
+    elif periodo == '2022':
         return resumen[1]
+    elif periodo == '30 Dias':
+        return resumen[3]
     else:
         return resumen[0]
 
@@ -151,7 +165,7 @@ class Interface(ScreenManager):
 
         tabla = GridLayout(cols=6, spacing=2, size_hint_y=None)
 
-        tabla.add_widget(Label(text='Año', font_size=27, halign='center', text_size=(50, None)))
+        tabla.add_widget(Label(text='Año', font_size=27, halign='center', text_size=(70, None)))
         tabla.add_widget(Label(text='Ranking', font_size=27, halign='center', text_size=(110, None)))
         tabla.add_widget(Label(text='Contratos', font_size=27, halign='center', text_size=(120, None)))
         tabla.add_widget(Label(text='Servicios', font_size=27, halign='center', text_size=(160, None)))
@@ -168,29 +182,29 @@ class Interface(ScreenManager):
             button = Button(
                 text=Año,
                 background_normal='',
-                background_color=[73 / 255, 116 / 255, 165 / 255, 1],
+                background_color=[31/256, 44/256, 86/256, 1],
                 font_size=27,
                 halign='center',
-                text_size=(120, None)  # Ajusta el ancho
+                text_size=(70, None)  # Ajusta el ancho
             )
             tabla.add_widget(button)
             button = Button(
                 text=Ranking,
                 background_normal='',
-                background_color=[73 / 255, 116 / 255, 165 / 255, 1],
+                background_color=[31/256, 44/256, 86/256, 1],
                 font_size=27,
                 halign='center',
-                text_size=(120, None)  # Ajusta el ancho (200) y deja la altura como None
+                text_size=(110, None)  # Ajusta el ancho (200) y deja la altura como None
             )
             tabla.add_widget(button)
 
             button = Button(
                 text=Contratos,
                 background_normal='',
-                background_color=[73 / 255, 116 / 255, 165 / 255, 1],
+                background_color=[31/256, 44/256, 86/256, 1],
                 font_size=27,
                 halign='center',
-                text_size=(200, None)  # Ajusta el ancho (200) y deja la altura como None
+                text_size=(120, None)  # Ajusta el ancho (200) y deja la altura como None
             )
             tabla.add_widget(button)
 
@@ -199,10 +213,10 @@ class Interface(ScreenManager):
             button = Button(
                 text=importe_formateado,
                 background_normal='',
-                background_color=[73 / 255, 116 / 255, 165 / 255, 1],
+                background_color=[31/256, 44/256, 86/256, 1],
                 font_size=27,
                 halign='center',
-                text_size=(120, None)  # Ajusta el ancho (200) y deja la altura como None
+                text_size=(160, None)  # Ajusta el ancho (200) y deja la altura como None
             )
             tabla.add_widget(button)
 
@@ -211,10 +225,10 @@ class Interface(ScreenManager):
             button = Button(
                 text=importe_formateado,
                 background_normal='',
-                background_color=[73 / 255, 116 / 255, 165 / 255, 1],
+                background_color=[31/256, 44/256, 86/256, 1],
                 font_size=27,
                 halign='center',
-                text_size=(120, None)  # Ajusta el ancho (200) y deja la altura como None
+                text_size=(160, None)  # Ajusta el ancho (200) y deja la altura como None
             )
             tabla.add_widget(button)
 
@@ -223,15 +237,15 @@ class Interface(ScreenManager):
             button = Button(
                 text=importe_formateado,
                 background_normal='',
-                background_color=[73 / 255, 116 / 255, 165 / 255, 1],
+                background_color=[31/256, 44/256, 86/256, 1],
                 font_size=27,
                 halign='center',
-                text_size=(120, None)  # Ajusta el ancho (200) y deja la altura como None
+                text_size=(160, None)  # Ajusta el ancho (200) y deja la altura como None
             )
             tabla.add_widget(button)
 
-        tabla.size_hint_y = None
-        tabla.height = 190  # Ajusta el valor según tus necesidades
+        #tabla.size_hint_y = None
+        tabla.height = 160  # Ajusta el valor según tus necesidades
 
         self.ids.resultados.clear_widgets()  # Borra cualquier tabla anterior
         self.ids.resultados.add_widget(tabla)  # Agrega la nueva tabla
@@ -299,18 +313,18 @@ class Interface(ScreenManager):
         self.ids.tabla_contratos.add_widget(tabla)  # Agrega la nueva tabla
 
     def display_screen2(self):
-        tabla = GridLayout(cols=5, spacing=3, row_default_height=80, size_hint_y=None)
+        tabla = GridLayout(cols=3, spacing=3, row_default_height=92, size_hint_y=None)
         tabla.bind(minimum_height=tabla.setter('height'))
 
         for proveedor in listatop100:
             boton = Button(
                 text=proveedor,
-                font_size=18,
+                font_size=22,
                 halign='center',
                 background_normal='',
                 background_color=[25 / 255, 36 / 255, 68 / 255, 1],
                 color=(1, 0.647, 0, 1),
-                text_size=(220, None)
+                text_size=(240, None)
             )
             boton.bind(on_press=lambda instance, proveedor=proveedor: self.muestra_resultados(proveedor))
             tabla.add_widget(boton)
@@ -324,7 +338,7 @@ class Interface(ScreenManager):
         data = top_10_instituciones2
         importes = [float(row[1].replace(',', '')) for row in data[1:]]
         instituciones = [row[0] for row in data[1:]]
-        fig_instituciones, ax_instituciones = plt.subplots(figsize=(4.5, 4,),facecolor='#192444',dpi=100)
+        fig_instituciones, ax_instituciones = plt.subplots(figsize=(10.4, 4),facecolor='#192444',dpi=100)
         ax_instituciones.set_facecolor('#182243')
 
 
@@ -336,6 +350,10 @@ class Interface(ScreenManager):
         ax_instituciones.tick_params(axis='y', labelcolor='white',labelsize=18)  # Cambiar el color de las etiquetas del eje y a lightcyan
         ax_instituciones.tick_params(axis='x', colors='white')
         ax_instituciones.set_xticks([])
+
+        #ax_instituciones.set_xlim(right=-0)
+
+
         plt.tick_params(labelbottom=False, bottom=False)
         title = ax_instituciones.set_title('Instituciones con mas compras (Millones)',
                                    color='white',fontsize=18)
@@ -400,8 +418,6 @@ class Interface(ScreenManager):
 class DashboardApp(App):
     def build(self):
         return Interface()
-
-
 
 
 

@@ -44,12 +44,13 @@
                     padding: [0, 0, 0, 0]
                     #spacing: dp(50)
 
+
                 Spinner:
                     background_normal: ''
                     background_color: 73/255, 116/255, 165/255, 1
                     text: '2023'  # Establece el valor por defecto
 
-                    values: ['2021','2022', '2023']
+                    values: ['2021','2022', '2023','30 Dias']
                     #padding: [0, 0, 0, 0]
                     pos_hint: {'center_x': 0.2, 'top': 0.7}
                     #font_size: 18
@@ -272,11 +273,13 @@
 
         BoxLayout:
             orientation: "vertical"
-            padding: [dp(5), dp(5), dp(5), dp(20)]
+            padding: [dp(15), dp(5), dp(15), dp(20)]
+            spacing: 30
 
             BoxLayout:
                 orientation: "horizontal"
-                size_hint: .97, 0.2
+                size_hint: .97, 0.15
+                #height: self.minimum_height  # Asegura que la altura se ajuste automáticamente
                 padding: [5,10,30,10]
                 Image:
                     source: 'logo.png'  # Reemplaza con la ruta de tu logo
@@ -289,7 +292,7 @@
                 Label:
                     text: "Compras Públicas \n Equipo Médico"
                     font_size: 30
-                    #size_hint: 0.8, 0.12
+                    #size_hint: 0.8, 0.15
                     canvas.before:
                     #background_color: 25/255, 36/255, 68/255, 1  # Color de fondo (#192444)
                     color: 224/255, 1, 1, 1
@@ -310,13 +313,49 @@
                     size_hint: None, None
                     size: 150, 80  # Ajusta el tamaño como desees
 
+            BoxLayout:
+
+                orientation:'vertical'
+                spacing: 30
+                padding: [20,0,20,20]
+                size_hint:1,0.3
+
+                canvas.before:
+                    Color:
+                        rgba: 25/255, 36/255, 68/255, 1
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+
+
+
+                Label:
+                    padding:0
+                    id: emp_sel
+                    background_normal: ''
+                    background_color: 68/256, 25/256, 36/256, 1
+                    size_hint:1,0.3
+                    pos_hint: {'center_x': 0.5, 'top': 1}
+                    #size_hint_y: 50
+                    font_size: 24
+                    color: 1, 0.647, 0, 1
+                    #height: 45  # Ajusta la altura como desees
+
+
+                BoxLayout:
+                    size_hint:1,0.7
+                    orientation: "vertical"
+                    id: resultados
+                    #size_hint_y: None
+                    #height: self.minimum_height  # Asegura que la altura se ajuste automáticamente
+                    #size_pos:0,0
 
 
 
 
             ScrollView:
-                size_hint: 1, 1
-                bar_width: 20
+                size_hint: 1, 0.7
+                bar_width: 10
                 scroll_timeout: 150
                 scroll_type: ['bars','content']
 
@@ -327,12 +366,7 @@
                     size_hint_y: None
                     height: self.minimum_height
                     spacing: 10
-                    padding: 10
-
-
-
-
-
+                    padding: 0
 
 
                     BoxLayout:
@@ -369,7 +403,7 @@
 
 
 
-                        padding: [10,0,10,40]
+                        padding: [0,0,0,40]
                         #spacing: 50
                         id: empresas
                         #cols: 3
@@ -382,42 +416,6 @@
                         height: self.minimum_height  # Asegura que la altu
 
 
-            BoxLayout:
-
-                orientation:'vertical'
-                spacing: 20
-                padding: [0,30,0,30]
-                size_hint:1,0.5
-
-                canvas.before:
-                    Color:
-                        rgba: 73/255, 116/255, 165/255, 1
-                    Rectangle:
-                        pos: self.pos
-                        size: self.size
-
-                BoxLayout:
-                    orientation: "vertical"
-
-                    Button:
-                        id: emp_sel
-                        background_normal: ''
-                        background_color: 68/256, 25/256, 36/256, 1
-                        size_hint_y: None
-                        height: 60  # Ajusta la altura como desees
-
-
-
-
-
-                BoxLayout:
-                    #size_hint:1,1
-                    orientation: "vertical"
-                    id: resultados
-                    margin:0
-                    size_hint_y: None
-                    height: self.minimum_height  # Asegura que la altura se ajuste automáticamente
-                    #size_pos:0,0
 
 
 
