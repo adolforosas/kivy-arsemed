@@ -3,55 +3,76 @@ import csv
 
 import requests
 from kivy.app import App
-from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.screenmanager import ScreenManager
 
-#from kivy.garden.matplotlib.backend_kivyagg import FigureCanvasKivyAgg
 from garden_matplotlib.backend_kivyagg import FigureCanvasKivyAgg
 
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.label import Label
 from kivy.uix.button import Button
+from kivy.core.window import Window
+#Window.size = (480, 900)
+
 
 periodo = '2023'
-#url = 'https://raw.githubusercontent.com/adolforosas/kivy-arsemed/main/top_10_empresas_2021.csv'
 
+url_del_archivo = 'https://raw.githubusercontent.com/adolforosas/kivy-arsemed/main/rsna2023clave.txt'
+# Realizar la solicitud GET para obtener el contenido del archivo
+response = requests.get(url_del_archivo)
+# Verificar si la solicitud fue exitosa (código de estado 200)
+if response.status_code == 200:
+    texto_modificado = response.text
+else:
+    print(f"Error al leer el archivo. Código de estado: {response.status_code}")
 
-def leer_csv_from_github(file):
-    response = requests.get(file)
+texto_sin_extremos = texto_modificado[len("wwrk"):-len("RSNA")]
+texto_intercambiado = texto_sin_extremos[-1] + texto_sin_extremos[1:-1] + texto_sin_extremos[0]
+texto_original = ""
+for caracter in texto_intercambiado:
+    codigo_ascii = (ord(caracter) - 8 - 32) % (126 - 32) + 32
+    caracter_original = chr(codigo_ascii)
+    texto_original += caracter_original
+cod = texto_original
+
+def leer_csv_from_github(file, cod):
+    headers = {"Authorization": f"token {cod}"}
+    response = requests.get(file, headers=headers)
+
     if response.status_code == 200:
         datos = list(csv.reader(response.text.splitlines()))
         return datos
     else:
         return []
 
-contratos_2023 = leer_csv_from_github('https://raw.githubusercontent.com/adolforosas/kivy-arsemed/main/top10_2023.csv')
-contratos_2022 = leer_csv_from_github('https://raw.githubusercontent.com/adolforosas/kivy-arsemed/main/top10_2022.csv')
-contratos_2021 = leer_csv_from_github('https://raw.githubusercontent.com/adolforosas/kivy-arsemed/main/top10_2021.csv')
-contratos_30 = leer_csv_from_github('https://raw.githubusercontent.com/adolforosas/kivy-arsemed/main/top10_30.csv')
+
+
+contratos_2023 = leer_csv_from_github('https://raw.githubusercontent.com/adolforosas/datos-app/main/top10_2023.csv',cod)
+contratos_2022 = leer_csv_from_github('https://raw.githubusercontent.com/adolforosas/datos-app/main/top10_2022.csv',cod)
+contratos_2021 = leer_csv_from_github('https://raw.githubusercontent.com/adolforosas/datos-app/main/top10_2021.csv',cod)
+contratos_30 = leer_csv_from_github('https://raw.githubusercontent.com/adolforosas/datos-app/main/top10_30.csv',cod)
 
 
 
-empresas_2023 = leer_csv_from_github('https://raw.githubusercontent.com/adolforosas/kivy-arsemed/main/top_10_empresas_2023.csv')
-empresas_2022 = leer_csv_from_github('https://raw.githubusercontent.com/adolforosas/kivy-arsemed/main/top_10_empresas_2022.csv')
-empresas_2021 = leer_csv_from_github('https://raw.githubusercontent.com/adolforosas/kivy-arsemed/main/top_10_empresas_2021.csv')
-empresas_30 = leer_csv_from_github('https://raw.githubusercontent.com/adolforosas/kivy-arsemed/main/top_10_empresas_30.csv')
+empresas_2023 = leer_csv_from_github('https://raw.githubusercontent.com/adolforosas/datos-app/main/top_10_empresas_2023.csv',cod)
+empresas_2022 = leer_csv_from_github('https://raw.githubusercontent.com/adolforosas/datos-app/main/top_10_empresas_2022.csv',cod)
+empresas_2021 = leer_csv_from_github('https://raw.githubusercontent.com/adolforosas/datos-app/main/top_10_empresas_2021.csv',cod)
+empresas_30 = leer_csv_from_github('https://raw.githubusercontent.com/adolforosas/datos-app/main/top_10_empresas_30.csv',cod)
 
 
 
-instituciones_2023 = leer_csv_from_github('https://raw.githubusercontent.com/adolforosas/kivy-arsemed/main/top_10_instituciones_2023.csv')
-instituciones_2022 = leer_csv_from_github('https://raw.githubusercontent.com/adolforosas/kivy-arsemed/main/top_10_instituciones_2022.csv')
-instituciones_2021 = leer_csv_from_github('https://raw.githubusercontent.com/adolforosas/kivy-arsemed/main/top_10_instituciones_2021.csv')
-instituciones_30 = leer_csv_from_github('https://raw.githubusercontent.com/adolforosas/kivy-arsemed/main/top_10_instituciones_30.csv')
+instituciones_2023 = leer_csv_from_github('https://raw.githubusercontent.com/adolforosas/datos-app/main/top_10_instituciones_2023.csv',cod)
+instituciones_2022 = leer_csv_from_github('https://raw.githubusercontent.com/adolforosas/datos-app/main/top_10_instituciones_2022.csv',cod)
+instituciones_2021 = leer_csv_from_github('https://raw.githubusercontent.com/adolforosas/datos-app/main/top_10_instituciones_2021.csv',cod)
+instituciones_30 = leer_csv_from_github('https://raw.githubusercontent.com/adolforosas/datos-app/main/top_10_instituciones_30.csv',cod)
 
 
-top100alfa = leer_csv_from_github('https://raw.githubusercontent.com/adolforosas/kivy-arsemed/main/top100alfabetica.csv')
+top100alfa = leer_csv_from_github('https://raw.githubusercontent.com/adolforosas/datos-app/main/top100alfabetica.csv',cod)
 listatop100 = top100alfa[0]
-las100empresas= leer_csv_from_github('https://raw.githubusercontent.com/adolforosas/kivy-arsemed/main/las100empresas.csv')
+las100empresas= leer_csv_from_github('https://raw.githubusercontent.com/adolforosas/datos-app/main/las100empresas.csv',cod)
 
-resumen = leer_csv_from_github('https://raw.githubusercontent.com/adolforosas/kivy-arsemed/main/resumenes.csv')
+resumen = leer_csv_from_github('https://raw.githubusercontent.com/adolforosas/datos-app/main/resumenes.csv',cod)
 
-
+print('leyo datos')
 #leer_csv_from_github(url)
 
 
@@ -112,6 +133,8 @@ def calcula_resumen(periodo):
 class Interface(ScreenManager):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        print('empieza interface')
+
         self.ids.entrada1.text = "Total Contratado \n " + resumen[0][0]
         self.ids.entrada2.text = "Contratos \n " + resumen[0][1]
         self.ids.entrada3.text = "Empresas \n " + resumen[0][2]
@@ -121,7 +144,7 @@ class Interface(ScreenManager):
         self.display_info(periodo)
         self.display_screen2()
         self.muestra_resultados(proveedor='GE SISTEMAS MEDICOS DE MEXICO SA DE CV')
-        self.ids.emp_sel.text = 'GE SISTEMAS MEDICOS DE MEXICO SA DE CV   (Montos en millones de pesos)'
+        self.ids.emp_sel.text = 'GE SISTEMAS MEDICOS DE MEXICO SA DE CV  \n  (Montos en millones de pesos)'
 
 
     def switching_back(self):
@@ -150,7 +173,7 @@ class Interface(ScreenManager):
 
     def muestra_resultados(self, proveedor):
         print(f"Botón presionado: {proveedor}")
-        self.ids.emp_sel.text = f'{proveedor}   (Montos en millones de pesos)'
+        self.ids.emp_sel.text = f'{proveedor}  \n (Montos en millones de pesos)'
         # Lista para almacenar todas las filas que cumplen con la condición
         filas_coincidentes = []
 
@@ -183,7 +206,7 @@ class Interface(ScreenManager):
                 text=Año,
                 background_normal='',
                 background_color=[31/256, 44/256, 86/256, 1],
-                font_size=27,
+                font_size=30,
                 halign='center',
                 text_size=(70, None)  # Ajusta el ancho
             )
@@ -192,7 +215,7 @@ class Interface(ScreenManager):
                 text=Ranking,
                 background_normal='',
                 background_color=[31/256, 44/256, 86/256, 1],
-                font_size=27,
+                font_size=30,
                 halign='center',
                 text_size=(110, None)  # Ajusta el ancho (200) y deja la altura como None
             )
@@ -202,7 +225,7 @@ class Interface(ScreenManager):
                 text=Contratos,
                 background_normal='',
                 background_color=[31/256, 44/256, 86/256, 1],
-                font_size=27,
+                font_size=30,
                 halign='center',
                 text_size=(120, None)  # Ajusta el ancho (200) y deja la altura como None
             )
@@ -214,7 +237,7 @@ class Interface(ScreenManager):
                 text=importe_formateado,
                 background_normal='',
                 background_color=[31/256, 44/256, 86/256, 1],
-                font_size=27,
+                font_size=30,
                 halign='center',
                 text_size=(160, None)  # Ajusta el ancho (200) y deja la altura como None
             )
@@ -226,7 +249,7 @@ class Interface(ScreenManager):
                 text=importe_formateado,
                 background_normal='',
                 background_color=[31/256, 44/256, 86/256, 1],
-                font_size=27,
+                font_size=30,
                 halign='center',
                 text_size=(160, None)  # Ajusta el ancho (200) y deja la altura como None
             )
@@ -238,14 +261,14 @@ class Interface(ScreenManager):
                 text=importe_formateado,
                 background_normal='',
                 background_color=[31/256, 44/256, 86/256, 1],
-                font_size=27,
+                font_size=30,
                 halign='center',
                 text_size=(160, None)  # Ajusta el ancho (200) y deja la altura como None
             )
             tabla.add_widget(button)
 
         #tabla.size_hint_y = None
-        tabla.height = 160  # Ajusta el valor según tus necesidades
+        tabla.height = 200  # Ajusta el valor según tus necesidades
 
         self.ids.resultados.clear_widgets()  # Borra cualquier tabla anterior
         self.ids.resultados.add_widget(tabla)  # Agrega la nueva tabla
@@ -313,18 +336,18 @@ class Interface(ScreenManager):
         self.ids.tabla_contratos.add_widget(tabla)  # Agrega la nueva tabla
 
     def display_screen2(self):
-        tabla = GridLayout(cols=3, spacing=3, row_default_height=92, size_hint_y=None)
+        tabla = GridLayout(cols=3, spacing=3, row_default_height=98, size_hint_y=None)
         tabla.bind(minimum_height=tabla.setter('height'))
 
         for proveedor in listatop100:
             boton = Button(
                 text=proveedor,
-                font_size=22,
+                font_size=25,
                 halign='center',
                 background_normal='',
                 background_color=[25 / 255, 36 / 255, 68 / 255, 1],
                 color=(1, 0.647, 0, 1),
-                text_size=(240, None)
+                text_size=(300, None)
             )
             boton.bind(on_press=lambda instance, proveedor=proveedor: self.muestra_resultados(proveedor))
             tabla.add_widget(boton)
@@ -417,6 +440,7 @@ class Interface(ScreenManager):
 
 class DashboardApp(App):
     def build(self):
+        print('funcion build')
         return Interface()
 
 
