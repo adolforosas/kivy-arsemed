@@ -1,17 +1,55 @@
 <Interface>:
     Screen:
+        name: "Loading Screen"
+
+        MDBoxLayout:
+            size_hint: 1, 1
+            md_bg_color: [31/256, 44/256, 86/256, 1]
+            pos_hint: { "center_x": .5, "center_y": .5 }
+            MDBoxLayout:
+                size_hint: 1, .5
+                spacing: 20
+                orientation: "vertical"
+                pos_hint: { "center_x": .5, "center_y": .5 }
+                MDSpinner:
+                    id: load_spinner
+                    size_hint: .2, .3
+                    size: dp(5), dp(5)
+                    pos_hint: {'center_x': .5}
+                    determinate: False
+                    color: 'white'
+
+                Image:
+                    pos_hint: { "center_x": .5, "center_y": .5 }
+                    source: 'logo.png'
+                    size_hint_y: .2
+
+                MDBoxLayout:
+                    orientation: 'vertical'
+                    adaptive_height: True
+                    size_hint_y: .1
+                    CustomLabel:
+                        id: tagline
+                        adaptive_height: True
+                        halign: 'center'
+                        font_size: '18sp'
+                        size_hint_x: .8
+                        pos_hint: {'center_x': .5, 'center_y': .5}
+                        theme_text_color: 'Custom'
+                        text_color: 'white'
+                        text: 'Arsemed: Transformando Datos en Información'
+ 
+    Screen:
         name: "Main Screen"
-        canvas.before:
-            Color:
-                rgba: (31/256, 44/256, 86/256, 1)
-            Rectangle:
-                pos: self.pos
-                size: self.size
+        MDBoxLayout:
+            size_hint: 1, 1
+            md_bg_color: [31/256, 44/256, 86/256, 1]
+            pos_hint: { "center_x": .5, "center_y": .5 }
 
-        orientation: "vertical"
+            orientation: "vertical"
 
-        padding: [dp(5), dp(0), dp(5), dp(0)]
-        spacing: dp(2)
+            padding: [dp(5), dp(0), dp(5), dp(0)]
+            spacing: dp(2)
 
 
         BoxLayout:
@@ -50,7 +88,7 @@
                     background_color: 73/255, 116/255, 165/255, 1
                     text: '2023'  # Establece el valor por defecto
 
-                    values: ['2021','2022', '2023','30 Dias']
+                    values: ['2021','2022', '2023','2024','30 Dias']
                     #padding: [0, 0, 0, 0]
                     pos_hint: {'center_x': 0.2, 'top': 0.7}
                     #font_size: 18
@@ -249,10 +287,10 @@
 
                         Button:
                             background_normal: ''
-                            background_color: 68/256, 25/256, 36/256, 1
-                            font_size: 28
+                            background_color: 73/255, 116/255, 165/255, 1
+                            font_size: 32
                             size_hint:1,1
-                            text: "Ir a detalles de las 100 empresas con mayores ventas >>"
+                            text: "Ver detalles de las 100 empresas con mayores ventas >>"
                             text_size: self.width, None
                             halign: 'center'
                             size_hint_y: None
@@ -260,18 +298,15 @@
                             on_press: root.switching()
     Screen:
         name: "Profile"
-        canvas.before:
-            Color:
-                rgba: (31/256, 44/256, 86/256, 1)
-            Rectangle:
-                pos: self.pos
-                size: self.size
+        MDBoxLayout:
+            size_hint: 1, 1
+            md_bg_color: [31/256, 44/256, 86/256, 1]
+            pos_hint: { "center_x": .5, "center_y": .5 }
 
-        orientation: "vertical"
+            orientation: "vertical"
 
-        padding: [dp(5), dp(0), dp(5), dp(0)]
-        spacing: dp(2)
-
+            padding: [dp(5), dp(0), dp(5), dp(0)]
+            spacing: dp(2)
 
         BoxLayout:
             orientation: "vertical"
@@ -417,7 +452,7 @@
                                 text: "Seleccione una empresa"
                                 background_normal: ''
                                 background_color: 31/256, 44/256, 86/256, 1
-                                font_size: 28
+                                font_size: 32
                                 #size_hint:0.75,1
                                 size_hint_y: None
                                 height: 30  # Ajusta la altura como desees
