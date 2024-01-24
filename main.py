@@ -2,9 +2,8 @@ import matplotlib.pyplot as plt
 import csv
 from kivy.uix.modalview import ModalView
 import requests
-from kivymd.app import MDApp
+from kivy.app import App
 from kivy.uix.screenmanager import ScreenManager, SlideTransition, Screen
-from kivymd.uix.spinner import MDSpinner
 from garden_matplotlib.backend_kivyagg import FigureCanvasKivyAgg
 import threading
 from kivy.uix.gridlayout import GridLayout
@@ -13,8 +12,8 @@ from kivy.uix.button import Button
 from kivy.core.window import Window
 # Window.size = (480, 900)
 from kivy.uix.spinner import Spinner
-from kivymd.uix.label import MDLabel
 from kivy.clock import Clock
+
 
 def leer_csv_from_github(file, cod):
     headers = {"Authorization": f"token {cod}"}
@@ -157,10 +156,6 @@ def calcula_resumen(periodo):
         return resumen[0]
 
 
-class CustomLabel(MDLabel):
-    pass
-
-
 class Interface(ScreenManager):
 
     def __init__(self, **kwargs):
@@ -182,9 +177,7 @@ class Interface(ScreenManager):
 
         self.ids.emp_sel.text = 'GE SISTEMAS MEDICOS DE MEXICO SA DE CV  \n  (Montos en millones de pesos)'
 
-        self.ids.load_spinner.active = False
-
-        self.ids.tagline.text = 'Soportando Decisiones que Marcan la Diferencia.'
+        self.ids.tagline.text = 'Soportando Decisiones que Hacen la Diferencia.'
 
         Clock.schedule_once(self.switch_to_main_screen, 0)
 
@@ -207,10 +200,8 @@ class Interface(ScreenManager):
 
     def switching(self):
 
-       # print(self.current_screen)
         self.transition.direction = "left"
         self.current = "Profile"
-      #  print(self.current_screen)
 
     def actualizar_textos(self, periodo):
         self.resumen = calcula_resumen(periodo=periodo)
@@ -520,7 +511,7 @@ class Interface(ScreenManager):
         self.ids.grafica2.add_widget(FigureCanvasKivyAgg(plt.gcf()))
 
 
-class DashboardApp(MDApp):
+class DashboardApp(App):
     def build(self):
 
         return Interface()
